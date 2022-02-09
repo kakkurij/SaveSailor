@@ -1,8 +1,12 @@
 # SaveSailor
 
-Project for Tampere Universities: COMP.SE.610/620 * Spring 2022 * Software Engineering Project 1 &amp; 2
+Project for Tampere Universities: COMP.SE.610/620 _ Spring 2022 _ Software Engineering Project 1 &amp; 2
 
 ## Installation
+
+### Secrets
+
+Rename `empty_secrets.env` to `secrets.env` and add values to keys
 
 ### Required packages
 
