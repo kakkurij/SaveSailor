@@ -1,14 +1,23 @@
 import psycopg2
 from time import sleep
+from os import getenv
 
+
+def read_secrets():
+    results = {}
+    results["POSTGRES_DB"] = getenv("POSTGRES_DB")
+    results["POSTGRES_USER"] = getenv("POSTGRES_USER")
+    results["POSTGRES_PASSWORD"] = getenv("POSTGRES_PASSWORD")
+    return results
 
 def test_database():
     connection_attempts = 0
     conn = None
+    secrets = read_secrets()
     while connection_attempts < 3:
         try:
             connection_attempts += 1
-            conn = psycopg2.connect(database="savesailor_database", user = "username", password = "password", host = "database", port = "5432")
+            conn = psycopg2.connect(database = secrets["POSTGRES_DB"], user = secrets["POSTGRES_USER"], password = secrets["POSTGRES_PASSWORD"], host = "database", port = "5432")
             connection_attempts = 0
             break
         except psycopg2.OperationalError:
