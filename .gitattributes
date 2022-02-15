@@ -1,0 +1,5 @@
+*.py eol=lf
+*.yml eol=lf
+*.env eol=lf
+*.md eol=lf
+Dockerfile eol=lf
