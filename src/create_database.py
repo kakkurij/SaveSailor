@@ -1,3 +1,4 @@
+
 import psycopg2
 from time import sleep
 from os import getenv
@@ -13,8 +14,9 @@ def read_secrets():
 
 
 
+
 df = pd.read_excel('./data/tehtavat.xlsx')
 
-engine = create_engine('postgresql+psycopg2://username:password@database/savesailor_database')
+engine = create_engine('postgresql+psycopg2://username:password@localhost/savesailor_database')
 
 df.to_sql('rescue_data', con=engine)
