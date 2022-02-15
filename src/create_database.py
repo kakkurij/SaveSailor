@@ -1,4 +1,3 @@
-
 import psycopg2
 from time import sleep
 from os import getenv
@@ -11,8 +10,6 @@ def read_secrets():
     results["POSTGRES_USER"] = getenv("POSTGRES_USER")
     results["POSTGRES_PASSWORD"] = getenv("POSTGRES_PASSWORD")
     return results
-
-
 
 
 df = pd.read_excel('./data/tehtavat.xlsx')
