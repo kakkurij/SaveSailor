@@ -12,3 +12,10 @@ services:
       - secrets.env
     depends_on:
       - "database"
+
+  weather:
+    build: ./src
+    env_file:
+      - secrets.env
+    depends_on:
+      - "database"

@@ -4,4 +4,4 @@ COPY requirements.txt ./
 RUN python3 -m pip install --upgrade --no-cache-dir -r requirements.txt
 COPY . .
 EXPOSE 5432
-CMD ["pytest", "test.py"]
+CMD ["python", "-u", "fmi_data.py"]

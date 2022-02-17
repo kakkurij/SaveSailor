@@ -1,0 +1,6 @@
+pandas==1.4.1
+psycopg2-binary==2.9.3
+SQLAlchemy==1.4.31
+fmiopendata==0.3.4
+requests==2.27.1
+DateTime==4.4
