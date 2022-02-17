@@ -27,6 +27,10 @@ Clone the repository and build containers
 
     docker-compose up database
 
+### Add excel data to database
+
+    docker-compose run create_database
+
 ### Weather data to database
 
     docker-compose run weather
