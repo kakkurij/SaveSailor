@@ -19,6 +19,8 @@ Clone the repository and build containers
 
     git clone https://github.com/kakkurij/SaveSailor.git SaveSailor
     cd SaveSailor
+    cp empty_secrets.env secrets.env
+    # Add secrets to secrets.env
     docker-compose build
 
 ## Usage
