@@ -27,6 +27,10 @@ Clone the repository and build containers
 
     docker-compose up database
 
+### Weather data to database
+
+    docker-compose run weather
+
 ### Running tests
 
 This starts the database and runs tests
