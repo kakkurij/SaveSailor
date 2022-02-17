@@ -14,6 +14,10 @@ def create_database():
     secrets = read_secrets()
     df = pd.read_excel("./data/tehtavat.xlsx")
     engine = create_engine("postgresql+psycopg2://%s:%s@database/%s" % (secrets["POSTGRES_USER"], secrets["POSTGRES_PASSWORD"], secrets["POSTGRES_DB"]))
+
+    with engine.begin() as conn:
+        conn.execute("drop table if exists rescue_data")
+
     df.to_sql("rescue_data", con=engine)
 
 if __name__ == "__main__":
