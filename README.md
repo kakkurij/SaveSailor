@@ -29,6 +29,12 @@ Clone the repository and build containers
 
     docker-compose up database
 
+### Create and start services
+
+Start the database, run tests and add all data to database
+
+	docker-compose up --build
+
 ### Add excel data to database
 
     docker-compose run create_database
