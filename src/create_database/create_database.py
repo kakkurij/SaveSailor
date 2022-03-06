@@ -13,6 +13,10 @@ def read_secrets():
 def create_database():
     secrets = read_secrets()
     df = pd.read_excel("./data/tehtavat.xlsx")
+
+    # Make headers lowercase
+    df.columns = map(str.lower, df.columns)
+
     engine = create_engine("postgresql+psycopg2://%s:%s@database/%s" % (secrets["POSTGRES_USER"], secrets["POSTGRES_PASSWORD"], secrets["POSTGRES_DB"]))
 
     with engine.begin() as conn:
