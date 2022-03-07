@@ -1,6 +1,6 @@
 import psycopg2
-from time import sleep
 from os import getenv
+from time import sleep
 
 def read_secrets():
     results = {}
@@ -9,7 +9,7 @@ def read_secrets():
     results["POSTGRES_PASSWORD"] = getenv("POSTGRES_PASSWORD")
     return results
 
-def create_tables():
+def combine_data():
     connection_attempts = 0
     conn = None
     secrets = read_secrets()
@@ -25,29 +25,29 @@ def create_tables():
     if conn == None:
         assert(False) # Could not connect to database
 
+    
     cur = conn.cursor()
-    cur.execute('''DROP TABLE IF EXISTS WEATHER_DATA''')
-    cur.execute('''CREATE TABLE WEATHER_DATA(
-        id serial PRIMARY KEY,
-        ts TIMESTAMP, 
-        air_temperature DECIMAL,
-        wind_speed DECIMAL,
-        gust_speed DECIMAL,
-        wind_direction DECIMAL,
-        relative_humidity DECIMAL,
-        dew_point_temperature DECIMAL,
-        precipitation_amount DECIMAL,
-        precipitation_intensity DECIMAL,
-        snow_depth DECIMAL,
-        pressure_msl DECIMAL,
-        horizontal_visibility DECIMAL,
-        cloud_amount DECIMAL,
-        present_weather DECIMAL);''')
+    cur.execute('''DROP TABLE IF EXISTS RESCUE_WEATHER''')
+    cur.execute('''CREATE TABLE RESCUE_WEATHER(
+        index BIGINT,
+        id INTEGER,
+        PRIMARY KEY (index, id),
+        FOREIGN KEY (index) REFERENCES RESCUE_DATA(index),
+        FOREIGN KEY (id) REFERENCES WEATHER_DATA(id)
+    );''')
 
-    print("Table created!")
+    print("RESCUE_WEATHER created")
+
+    cur.execute('''
+        INSERT INTO RESCUE_WEATHER (index, id)
+        SELECT rd.index, wd.id
+        FROM RESCUE_DATA AS rd
+        LEFT JOIN  WEATHER_DATA AS wd
+        ON TRUE
+        WHERE wd.ts BETWEEN rd.kohteessa - interval '1 hours' AND rd.kohteessa
+    ''')
 
     conn.commit()
     conn.close()
 
-if __name__ == "__main__":
-    create_tables()
+

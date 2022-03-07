@@ -4,6 +4,7 @@ import datetime
 import numpy as np
 import calendar
 from create_weather_data_tables import create_tables, read_secrets
+from combine_data import combine_data
 from time import sleep
 from psycopg2.extras import execute_values
 
@@ -123,3 +124,7 @@ if __name__ == "__main__":
     create_tables()
     fmi_data = query_fmi_data()
     insert_fmi_data_to_db(fmi_data)
+    print("FMI data added")
+
+    print("Combining data")
+    combine_data()

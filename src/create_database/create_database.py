@@ -24,5 +24,9 @@ def create_database():
 
     df.to_sql("rescue_data", con=engine)
 
+    # Add Primary key to pandas make column index
+    with engine.begin() as conn:
+        conn.execute("ALTER TABLE rescue_data ADD PRIMARY KEY (index)")
+
 if __name__ == "__main__":
     create_database()
