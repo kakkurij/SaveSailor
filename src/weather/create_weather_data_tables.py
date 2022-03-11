@@ -26,7 +26,7 @@ def create_tables():
         assert(False) # Could not connect to database
 
     cur = conn.cursor()
-    cur.execute('''DROP TABLE IF EXISTS WEATHER_DATA''')
+    cur.execute('''DROP TABLE IF EXISTS WEATHER_DATA CASCADE''')
     cur.execute('''CREATE TABLE WEATHER_DATA(
         id serial PRIMARY KEY,
         ts TIMESTAMP, 
