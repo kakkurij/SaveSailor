@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   database:
-    image: 'postgres:bullseye'
+    image: 'postgis/postgis'
     ports: # <Port in machine>:<port in container>
       - "5432:5432"
     env_file:

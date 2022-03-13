@@ -9,6 +9,7 @@ def read_secrets():
     results["POSTGRES_PASSWORD"] = getenv("POSTGRES_PASSWORD")
     return results
 
+
 def combine_data():
     connection_attempts = 0
     conn = None
@@ -25,10 +26,9 @@ def combine_data():
     if conn == None:
         assert(False) # Could not connect to database
 
-    
     cur = conn.cursor()
-    cur.execute('''DROP TABLE IF EXISTS RESCUE_WEATHER''')
-    cur.execute('''CREATE TABLE RESCUE_WEATHER(
+    cur.execute('''DROP TABLE IF EXISTS rescue_weather''')
+    cur.execute('''CREATE TABLE rescue_weather(
         index BIGINT,
         id INTEGER,
         PRIMARY KEY (index, id),
@@ -36,18 +36,22 @@ def combine_data():
         FOREIGN KEY (id) REFERENCES WEATHER_DATA(id)
     );''')
 
-    print("RESCUE_WEATHER created")
-
     cur.execute('''
-        INSERT INTO RESCUE_WEATHER (index, id)
-        SELECT rd.index, wd.id
-        FROM RESCUE_DATA AS rd
-        LEFT JOIN  WEATHER_DATA AS wd
+    INSERT INTO rescue_weather (index, id)
+        SELECT DISTINCT ON(rd.index) rd.index, wd.id
+        FROM rescue_data AS rd
+        LEFT JOIN weather_data AS wd
         ON TRUE
-        WHERE wd.ts BETWEEN rd.kohteessa - interval '1 hours' AND rd.kohteessa
+	    WHERE wd.ts BETWEEN rd.kohteessa - interval '1 hours' AND rd.kohteessa AND wd.fmisid = (
+            SELECT ws.fmisid
+            FROM weather_station AS ws
+            ORDER BY ST_SetSRID(ST_MakePoint(rd."koordinaatit (lon)", rd."koordinaatit (lat)"), 4326) <#> ws.geom LIMIT 1
+	);
     ''')
 
     conn.commit()
     conn.close()
+
+    print("Combine data added")
 
 

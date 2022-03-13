@@ -9,6 +9,7 @@ def read_secrets():
     results["POSTGRES_PASSWORD"] = getenv("POSTGRES_PASSWORD")
     return results
 
+
 def create_tables():
     connection_attempts = 0
     conn = None
@@ -26,10 +27,11 @@ def create_tables():
         assert(False) # Could not connect to database
 
     cur = conn.cursor()
-    cur.execute('''DROP TABLE IF EXISTS WEATHER_DATA CASCADE''')
-    cur.execute('''CREATE TABLE WEATHER_DATA(
-        id serial PRIMARY KEY,
-        ts TIMESTAMP, 
+
+    cur.execute('''CREATE TABLE weather_data(
+        id SERIAL PRIMARY KEY,
+        fmisid INTEGER,
+        ts TIMESTAMP,
         air_temperature DECIMAL,
         wind_speed DECIMAL,
         gust_speed DECIMAL,
@@ -42,9 +44,11 @@ def create_tables():
         pressure_msl DECIMAL,
         horizontal_visibility DECIMAL,
         cloud_amount DECIMAL,
-        present_weather DECIMAL);''')
+        present_weather DECIMAL,
+        FOREIGN KEY (fmisid) REFERENCES weather_station(fmisid)
+        );''')
 
-    print("Table created!")
+    print("weather_data created!")
 
     conn.commit()
     conn.close()
