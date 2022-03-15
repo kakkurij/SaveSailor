@@ -2,6 +2,8 @@ import psycopg2
 from time import sleep
 from os import getenv
 
+from stations import add_stations
+
 def read_secrets():
     results = {}
     results["POSTGRES_DB"] = getenv("POSTGRES_DB")
@@ -10,7 +12,7 @@ def read_secrets():
     return results
 
 
-def create_tables():
+def create_connection():
     connection_attempts = 0
     conn = None
     secrets = read_secrets()
@@ -25,8 +27,33 @@ def create_tables():
             sleep(2)
     if conn == None:
         assert(False) # Could not connect to database
+    
+    return conn
 
+
+def drop_all_tables(conn):
     cur = conn.cursor()
+
+    cur.execute('''DROP TABLE IF EXISTS rescue_weather CASCADE''')
+    cur.execute('''DROP TABLE IF EXISTS weather_station CASCADE''')
+    cur.execute('''DROP TABLE IF EXISTS weather_data CASCADE''')
+
+    print("Dropped all weather tables")
+
+    conn.commit()
+
+
+def create_tables(conn):
+    cur = conn.cursor()
+
+    cur.execute('''CREATE TABLE weather_station(
+        fmisid INT PRIMARY KEY,
+        lat DOUBLE PRECISION,
+        lon DOUBLE PRECISION,
+        geom GEOMETRY(Point, 4326)
+    );''')
+
+    print("weather_station table created!")
 
     cur.execute('''CREATE TABLE weather_data(
         id SERIAL PRIMARY KEY,
@@ -48,10 +75,22 @@ def create_tables():
         FOREIGN KEY (fmisid) REFERENCES weather_station(fmisid)
         );''')
 
-    print("weather_data created!")
+    print("weather_data table created!")
+
+    cur.execute('''CREATE TABLE rescue_weather(
+        index BIGINT,
+        id INTEGER,
+        PRIMARY KEY (index, id),
+        FOREIGN KEY (index) REFERENCES RESCUE_DATA(index),
+        FOREIGN KEY (id) REFERENCES WEATHER_DATA(id)
+    );''')
+
+    print("rescue_weather table created!")
 
     conn.commit()
-    conn.close()
 
-if __name__ == "__main__":
-    create_tables()
+
+def setup_weather_database(conn):
+    drop_all_tables(conn)
+    create_tables(conn)
+    add_stations(conn)
