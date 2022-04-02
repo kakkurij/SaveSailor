@@ -1,7 +1,7 @@
 from os import getenv
 import pandas as pd
 import numpy as np
-from sqlalchemy import create_engine, true
+from sqlalchemy import create_engine
 
 # These columns should be datetime
 dt_columns = ["päivämäärä", "hälytys", "matkalla", "kohteessa", "vapaana / keskeytetty", "asemalla"]
@@ -13,7 +13,7 @@ def read_secrets():
     results["POSTGRES_PASSWORD"] = getenv("POSTGRES_PASSWORD")
     return results
 
-def create_database():
+def add_rescue_data():
     secrets = read_secrets()
     df = pd.read_excel("./data/tehtavat.xlsx")
 
@@ -35,6 +35,3 @@ def create_database():
     # Add Primary key to pandas make column index
     with engine.begin() as conn:
         conn.execute("ALTER TABLE rescue_data ADD PRIMARY KEY (index)")
-
-if __name__ == "__main__":
-    create_database()

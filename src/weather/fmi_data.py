@@ -2,10 +2,9 @@ from fmiopendata.wfs import download_stored_query
 import datetime
 import numpy as np
 import calendar
-from database_setup import setup_weather_database, create_connection
-from combine_data import combine_data
+from weather.database_setup import setup_weather_database, create_connection
+from weather.combine_data import combine_data
 from psycopg2.extras import execute_values
-import sys
 
 class FMIData:
     def __init__(self, conn):
@@ -131,18 +130,10 @@ class FMIData:
         self.insert_fmi_data_to_db(fmi_data)
 
 
-if __name__ == "__main__":
-    conn = create_connection()
-
-    if conn is None:
-        print("No database connection, exiting")
-        sys.exit(1)
-
+def run_fmi(conn):
     setup_weather_database(conn)
 
     fmi_data_parser = FMIData(conn)
     fmi_data_parser.run()
 
     combine_data(conn)
-
-    conn.close()

@@ -2,7 +2,7 @@ import psycopg2
 from time import sleep
 from os import getenv
 
-from stations import add_stations
+from weather.stations import add_stations
 
 def read_secrets():
     results = {}

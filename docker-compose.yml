@@ -12,16 +12,10 @@ services:
       - secrets.env
     depends_on:
       - "database"
-  weather:
-    build: ./src/weather
-    env_file:
-      - secrets.env
-    depends_on:
-      - "database"
   create_database:
     build:
       context: .
-      dockerfile: ./src/create_database/Dockerfile
+      dockerfile: ./src/main/Dockerfile
     env_file:
       - secrets.env
     depends_on:
