@@ -28,3 +28,14 @@ Clone the repository and build containers
 Start the database, run tests and add all data to database
 
     docker-compose up --build
+
+## VS Code
+
+These options should be used in addition to user's own settings
+
+```json
+{
+  "python.linting.flake8Enabled": true,
+  "python.linting.enabled": true
+}
+```
