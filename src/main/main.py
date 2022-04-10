@@ -7,7 +7,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
 if __name__ == "__main__":
-    add_rescue_data()# asdsad
+    add_rescue_data()
 
     conn = create_connection()
 
