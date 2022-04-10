@@ -2,9 +2,10 @@ from fmiopendata.wfs import download_stored_query
 import datetime
 import numpy as np
 import calendar
-from weather.database_setup import setup_weather_database, create_connection
+from weather.database_setup import setup_weather_database
 from weather.combine_data import combine_data
 from psycopg2.extras import execute_values
+
 
 class FMIData:
     def __init__(self, conn):
@@ -20,7 +21,11 @@ class FMIData:
         Returns:
             List of tuples: -
         """
-        last_days = [datetime.datetime(year, x, (calendar.monthrange(year, x)[1])) for x in range(1, 13)]
+        last_days = [
+            datetime.datetime(
+                year, x, (calendar.monthrange(
+                    year, x)[1])) for x in range(
+                1, 13)]
 
         first_days = [datetime.datetime(year, x, 1) for x in range(1, 13)]
 
@@ -35,7 +40,9 @@ class FMIData:
             _type_: _description_
         """
 
-        pairs_by_year = [self.get_dates(y) for y in range(2010, self.end_year + 1)] 
+        pairs_by_year = [
+            self.get_dates(y) for y in range(
+                2010, self.end_year + 1)]
         query_time_pairs = []
 
         for pairs in pairs_by_year:
@@ -48,27 +55,34 @@ class FMIData:
 
                 while True:
                     if first:
-                        end_datetime = to_start_from + datetime.timedelta(days=7)
+                        end_datetime = to_start_from + \
+                            datetime.timedelta(days=7)
 
-                        start_time = to_start_from.strftime("%Y-%m-%dT%H:%M:%SZ")
+                        start_time = to_start_from.strftime(
+                            "%Y-%m-%dT%H:%M:%SZ")
                         end_time = end_datetime.strftime("%Y-%m-%dT%H:%M:%SZ")
 
                         to_start_from = end_datetime
                         query_time_pairs.append((start_time, end_time))
                         first = False
                     else:
-                        start_datetime = to_start_from + datetime.timedelta(hours=1)
-                        end_datetime = to_start_from + datetime.timedelta(days=7)
+                        start_datetime = to_start_from + \
+                            datetime.timedelta(hours=1)
+                        end_datetime = to_start_from + \
+                            datetime.timedelta(days=7)
 
                         if end_datetime > end:
                             end_datetime = end_datetime.replace(day=1)
-                            start_time = start_datetime.strftime("%Y-%m-%dT%H:%M:%SZ")
-                            end_time = end_datetime.strftime("%Y-%m-%dT%H:%M:%SZ")
+                            start_time = start_datetime.strftime(
+                                "%Y-%m-%dT%H:%M:%SZ")
+                            end_time = end_datetime.strftime(
+                                "%Y-%m-%dT%H:%M:%SZ")
                             query_time_pairs.append((start_time, end_time))
                             break
 
-                        to_start_from = end_datetime    
-                        start_time = start_datetime.strftime("%Y-%m-%dT%H:%M:%SZ")
+                        to_start_from = end_datetime
+                        start_time = start_datetime.strftime(
+                            "%Y-%m-%dT%H:%M:%SZ")
                         end_time = end_datetime.strftime("%Y-%m-%dT%H:%M:%SZ")
 
                         query_time_pairs.append((start_time, end_time))
@@ -91,9 +105,15 @@ class FMIData:
                 start_time = f"starttime={pair[0]}"
                 end_time = f"endtime={pair[1]}"
 
-                args = [start_time, end_time, "timestep=60", f"fmisid={station_id}"]
+                args = [
+                    start_time,
+                    end_time,
+                    "timestep=60",
+                    f"fmisid={station_id}"]
 
-                res = download_stored_query("fmi::observations::weather::multipointcoverage", args=args)
+                res = download_stored_query(
+                    "fmi::observations::weather::multipointcoverage",
+                    args=args)
 
                 for dt, v in res.data.items():
                     fmi_data_list = []
@@ -110,7 +130,7 @@ class FMIData:
                                 value = value.item()
 
                             fmi_data_list.append(value)
-                    
+
                     fmi_data.append(fmi_data_list)
 
         return fmi_data
@@ -118,8 +138,14 @@ class FMIData:
     def insert_fmi_data_to_db(self, fmi_data):
         cur = self.conn.cursor()
 
-        execute_values(cur, """INSERT INTO WEATHER_DATA (fmisid, ts, air_temperature, wind_speed, gust_speed, wind_direction, relative_humidity, dew_point_temperature, precipitation_amount,
-        precipitation_intensity, snow_depth, pressure_msl, horizontal_visibility, cloud_amount, present_weather) VALUES %s""", fmi_data)
+        execute_values(
+            cur,
+            """INSERT INTO WEATHER_DATA (fmisid, ts, air_temperature, wind_speed,
+            gust_speed, wind_direction, relative_humidity,
+            dew_point_temperature, precipitation_amount,
+            precipitation_intensity, snow_depth, pressure_msl,
+            horizontal_visibility, cloud_amount, present_weather) VALUES %s""",
+            fmi_data)
 
         print("Added fmi data")
 

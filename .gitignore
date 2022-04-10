@@ -2,3 +2,4 @@ secrets.env
 *venv*
 __pycache__
 *.xlsx
+.vscode

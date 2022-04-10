@@ -4,6 +4,7 @@ from os import getenv
 
 from weather.stations import add_stations
 
+
 def read_secrets():
     results = {}
     results["POSTGRES_DB"] = getenv("POSTGRES_DB")
@@ -19,15 +20,20 @@ def create_connection():
     while connection_attempts < 3:
         try:
             connection_attempts += 1
-            conn = psycopg2.connect(database = secrets["POSTGRES_DB"], user = secrets["POSTGRES_USER"], password = secrets["POSTGRES_PASSWORD"], host = "database", port = "5432")
+            conn = psycopg2.connect(
+                database=secrets["POSTGRES_DB"],
+                user=secrets["POSTGRES_USER"],
+                password=secrets["POSTGRES_PASSWORD"],
+                host="database",
+                port="5432")
             connection_attempts = 0
             break
         except psycopg2.OperationalError:
             # Service might not be fully up yet.
             sleep(2)
-    if conn == None:
-        assert(False) # Could not connect to database
-    
+    if conn is None:
+        assert(False)   # Could not connect to database
+
     return conn
 
 
