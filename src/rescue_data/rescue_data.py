@@ -51,3 +51,5 @@ def add_rescue_data():
     # Add Primary key to pandas make column index
     with engine.begin() as conn:
         conn.execute("ALTER TABLE rescue_data ADD PRIMARY KEY (index)")
+
+    print("Added rescue data")

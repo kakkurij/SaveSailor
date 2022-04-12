@@ -10,7 +10,7 @@ from psycopg2.extras import execute_values
 class FMIData:
     def __init__(self, conn):
         self.conn = conn
-        self.end_year = 2014
+        self.end_year = 2011
 
     def get_dates(self, year):
         """Generate first and last day of each for for given year

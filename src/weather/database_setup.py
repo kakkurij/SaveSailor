@@ -54,6 +54,7 @@ def create_tables(conn):
 
     cur.execute('''CREATE TABLE weather_station(
         fmisid INT PRIMARY KEY,
+        name TEXT,
         lat DOUBLE PRECISION,
         lon DOUBLE PRECISION,
         geom GEOMETRY(Point, 4326)
