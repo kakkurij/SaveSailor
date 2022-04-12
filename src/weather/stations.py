@@ -6,9 +6,15 @@ def get_stations_data():
     # station is closest, but the data doesn't
     # include temperatures for example.
     stations = [
-        ["Helsinki Kaisaniemi", 100971, 60.18, 24.94],
         ["Varkaus Kosulanniemi", 101421, 62.32, 27.91],
-        ["Tampere Siilinkari", 101311, 61.52, 23.75]
+        ["Tampere Siilinkari", 101311, 61.52, 23.75],
+        ["Helsinki Harmaja", 100996, 60.11, 24.98],
+        ["Lappeenranta Hiekkapakka", 101252, 61.2, 28.47],
+        ["Turku Rajakari ", 100947, 60.38, 	22.1],
+        ["Kemiönsaari Vänö ", 100945, 59.87, 22.19],
+        ["Hanko Russarö ", 100932, 59.77, 22.95],
+        ["Hailuoto Marjaniemi", 101784, 65.04, 24.56],
+        ["Kuopio Ritoniemi", 101580, 62.8, 27.9]
     ]
 
     stations_data = []
