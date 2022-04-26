@@ -1,0 +1,11 @@
+[
+    {"name": "Varkaus Kosulanniemi", "fmisid": 101421, "lat": 62.32, "lon": 27.91},
+    {"name": "Tampere Siilinkari", "fmisid": 101311, "lat": 61.52, "lon": 23.75},
+    {"name": "Helsinki Harmaja", "fmisid": 100996, "lat": 60.11, "lon": 24.98},
+    {"name": "Lappeenranta Hiekkapakka", "fmisid": 101252, "lat": 61.2, "lon": 28.47},
+    {"name": "Turku Rajakari", "fmisid": 100947, "lat": 60.38, "lon": 	22.1},
+    {"name": "Kemiönsaari Vänö", "fmisid": 100945, "lat": 59.87, "lon": 22.19},
+    {"name": "Hanko Russarö", "fmisid": 100932, "lat": 59.77, "lon": 22.95},
+    {"name": "Hailuoto Marjaniemi", "fmisid": 101784, "lat": 65.04, "lon": 24.56},
+    {"name": "Kuopio Ritoniemi", "fmisid": 101580, "lat": 62.8, "lon": 27.9}
+]

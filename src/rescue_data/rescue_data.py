@@ -1,6 +1,6 @@
-from os import getenv
 import pandas as pd
 import numpy as np
+from weather.database_setup import read_secrets
 from sqlalchemy import create_engine
 
 # These columns should be datetime
@@ -11,14 +11,6 @@ dt_columns = [
     "kohteessa",
     "vapaana / keskeytetty",
     "asemalla"]
-
-
-def read_secrets():
-    results = {}
-    results["POSTGRES_DB"] = getenv("POSTGRES_DB")
-    results["POSTGRES_USER"] = getenv("POSTGRES_USER")
-    results["POSTGRES_PASSWORD"] = getenv("POSTGRES_PASSWORD")
-    return results
 
 
 def add_rescue_data():
