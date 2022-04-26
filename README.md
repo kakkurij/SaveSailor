@@ -21,6 +21,7 @@ Clone the repository and build containers
     cd SaveSailor
     cp empty_secrets.env secrets.env
     # Add secrets to secrets.env
+    # Move your excel to data/tehtavat.xlsx
     docker-compose build
 
 ## Usage
