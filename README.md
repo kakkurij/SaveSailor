@@ -30,6 +30,12 @@ Start the database, run tests and add all data to database
 
     docker-compose up --build
 
+The UI is started by opening the separate PowerBI program.
+
+Updating the data inside PowerBI is done by using the "Refresh"-button inside PowerBI.
+User might need to provide credentials that are defined inside secrets.env and
+the default address for server is "localhost".
+
 ## VS Code
 
 These options should be used in addition to user's own settings
